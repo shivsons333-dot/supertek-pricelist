@@ -1,0 +1,31 @@
+SKU,Product Name,Category,Brand,Cost Price
+ST-001,LED Bulb 9W B22,Lighting,Philips,42.00
+ST-002,LED Bulb 12W B22,Lighting,Philips,58.00
+ST-003,LED Tube Light 20W,Lighting,Syska,110.00
+ST-004,LED Panel Light 18W,Lighting,Havells,320.00
+ST-005,CFL Bulb 23W,Lighting,Bajaj,75.00
+ST-006,Ceiling Fan 48 inch,Fans,Crompton,880.00
+ST-007,Pedestal Fan,Fans,Usha,1250.00
+ST-008,Table Fan,Fans,Havells,760.00
+ST-009,Exhaust Fan 9 inch,Fans,Orient,420.00
+ST-010,MCB 32A Single Pole,Switchgear,Legrand,185.00
+ST-011,MCB 63A DP,Switchgear,Schneider,480.00
+ST-012,RCCB 40A 30mA,Switchgear,ABB,620.00
+ST-013,Distribution Board 8-way,Switchgear,Legrand,1100.00
+ST-014,3-Pin Plug Top,Wiring Accessories,Anchor,28.00
+ST-015,Modular Switch 6A,Wiring Accessories,Havells,55.00
+ST-016,Modular Socket 6A,Wiring Accessories,Havells,62.00
+ST-017,Extension Board 4-Socket,Wiring Accessories,Wipro,145.00
+ST-018,PVC Conduit Pipe 20mm,Conduits & Cables,Precision,38.00
+ST-019,Flexible Conduit 16mm,Conduits & Cables,Precision,22.00
+ST-020,1.5 Sqmm Wire (per mtr),Conduits & Cables,Polycab,18.00
+ST-021,2.5 Sqmm Wire (per mtr),Conduits & Cables,Polycab,28.00
+ST-022,4.0 Sqmm Wire (per mtr),Conduits & Cables,Finolex,42.00
+ST-023,6.0 Sqmm Wire (per mtr),Conduits & Cables,Finolex,62.00
+ST-024,Cable Tie 200mm (100 pcs),Accessories,Generic,85.00
+ST-025,PVC Tape,Accessories,3M,32.00
+ST-026,Electrical Tester Pen,Tools,Stanley,110.00
+ST-027,Digital Multimeter,Tools,Meco,480.00
+ST-028,Screwdriver Set (6 pcs),Tools,Stanley,320.00
+ST-029,Inverter 850VA,Power,Luminous,3200.00
+ST-030,Battery 150Ah,Power,Amaron,7800.00

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Supertek — Master Price List</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --blue:    #1a56db;
+      --blue-lt: #ebf0ff;
+      --green:   #057a55;
+      --text:    #111827;
+      --muted:   #6b7280;
+      --border:  #e5e7eb;
+      --bg:      #f9fafb;
+      --white:   #ffffff;
+      --red:     #dc2626;
+      --shadow:  0 1px 4px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--blue);
+      color: #fff;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
+    header .brand { display: flex; align-items: center; gap: 12px; }
+    header .logo {
+      width: 40px; height: 40px; background: #fff;
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-weight: 800; color: var(--blue); font-size: 18px;
+    }
+    header h1 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+    header p  { font-size: 12px; opacity: .8; margin-top: 2px; }
+    .badge {
+      font-size: 11px; font-weight: 600; padding: 3px 10px;
+      border-radius: 20px; background: rgba(255,255,255,.18); color: #fff;
+      border: 1px solid rgba(255,255,255,.3); white-space: nowrap;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 20px 32px 0;
+    }
+    .search-wrap { position: relative; flex: 1; min-width: 220px; max-width: 400px; }
+    .search-wrap svg {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none;
+    }
+    input[type="search"] {
+      width: 100%; padding: 9px 12px 9px 34px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 14px; background: var(--white); outline: none;
+      transition: border-color .15s;
+    }
+    input[type="search"]:focus { border-color: var(--blue); }
+
+    select {
+      padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 14px; background: var(--white); cursor: pointer; outline: none;
+      min-width: 150px;
+    }
+    select:focus { border-color: var(--blue); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 9px 18px; border-radius: 8px; font-size: 14px;
+      font-weight: 600; cursor: pointer; border: none; transition: all .15s;
+      white-space: nowrap;
+    }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #046040; }
+    .btn-outline {
+      background: var(--white); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { background: var(--bg); }
+
+    /* ── Stats row ── */
+    .stats {
+      display: flex; gap: 16px; padding: 16px 32px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 20px;
+      display: flex; flex-direction: column; gap: 2px; min-width: 140px;
+      box-shadow: var(--shadow);
+    }
+    .stat-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-value { font-size: 22px; font-weight: 700; color: var(--text); }
+    .stat-sub   { font-size: 12px; color: var(--muted); }
+
+    /* ── Table ── */
+    .table-wrap {
+      margin: 0 32px 32px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead { background: #f3f4f6; }
+    th {
+      padding: 12px 16px; text-align: left;
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .5px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none; white-space: nowrap;
+    }
+    th:hover { color: var(--blue); }
+    th .sort-icon { display: inline-block; margin-left: 4px; opacity: .4; }
+    th.asc  .sort-icon::after { content: " ▲"; }
+    th.desc .sort-icon::after { content: " ▼"; }
+    th:not(.asc):not(.desc) .sort-icon::after { content: " ⇅"; }
+
+    td {
+      padding: 11px 16px; border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--blue-lt); }
+
+    .sku {
+      font-family: monospace; font-size: 12px; font-weight: 600;
+      background: #f3f4f6; padding: 2px 7px; border-radius: 5px;
+      color: #374151; white-space: nowrap;
+    }
+    .price {
+      font-weight: 700; color: var(--text); font-size: 15px;
+    }
+    .cat-badge {
+      display: inline-block; padding: 2px 9px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+      background: var(--blue-lt); color: var(--blue);
+    }
+    .no-data {
+      text-align: center; padding: 60px 20px; color: var(--muted);
+    }
+    .no-data svg { margin-bottom: 12px; }
+
+    /* ── Footer ── */
+    .tfoot-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; border-top: 1px solid var(--border);
+      background: #f9fafb; font-size: 12px; color: var(--muted);
+      flex-wrap: wrap; gap: 8px;
+    }
+    .last-updated { font-size: 12px; color: var(--muted); padding: 4px 32px 8px; }
+
+    @media (max-width: 640px) {
+      header, .toolbar, .stats, .table-wrap { padding-left: 16px; padding-right: 16px; }
+      .table-wrap { margin-left: 16px; margin-right: 16px; }
+      th, td { padding: 10px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">ST</div>
+    <div>
+      <h1>Master Price List</h1>
+      <p>Supertek &nbsp;·&nbsp; Internal Reference</p>
+    </div>
+  </div>
+  <span class="badge" id="lastBadge">Loading…</span>
+</header>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="search" id="searchBox" placeholder="Search by name, SKU, brand…" oninput="render()"/>
+  </div>
+  <select id="catFilter" onchange="render()"><option value="">All Categories</option></select>
+  <select id="brandFilter" onchange="render()"><option value="">All Brands</option></select>
+  <button class="btn btn-green" onclick="exportExcel()">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Download Excel
+  </button>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-label">Total Products</span>
+    <span class="stat-value" id="statTotal">—</span>
+    <span class="stat-sub">in master list</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Showing</span>
+    <span class="stat-value" id="statShowing">—</span>
+    <span class="stat-sub">after filter</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Categories</span>
+    <span class="stat-value" id="statCats">—</span>
+    <span class="stat-sub">product groups</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Brands</span>
+    <span class="stat-value" id="statBrands">—</span>
+    <span class="stat-sub">suppliers/makers</span>
+  </div>
+</div>
+
+<p class="last-updated" id="lastUpdated"></p>
+
+<div class="table-wrap">
+  <table id="priceTable">
+    <thead>
+      <tr>
+        <th onclick="sortBy('sku')"        data-col="sku">        SKU / Code  <span class="sort-icon"></span></th>
+        <th onclick="sortBy('name')"       data-col="name">       Product Name <span class="sort-icon"></span></th>
+        <th onclick="sortBy('category')"   data-col="category">   Category    <span class="sort-icon"></span></th>
+        <th onclick="sortBy('brand')"      data-col="brand">      Brand        <span class="sort-icon"></span></th>
+        <th onclick="sortBy('costPrice')"  data-col="costPrice">  Cost Price ₹ <span class="sort-icon"></span></th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div class="tfoot-bar">
+    <span id="footerCount">Loading data…</span>
+    <span>Supertek Internal — Do not distribute externally</span>
+  </div>
+</div>
+
+<script>
+// ── Configuration ────────────────────────────────────────────────
+const CSV_FILE = 'prices.csv';   // must be in the same folder as index.html
+
+// ── State ────────────────────────────────────────────────────────
+let allRows    = [];
+let sortCol    = 'name';
+let sortDir    = 1;             // 1 = asc, -1 = desc
+
+// ── Load CSV ─────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const resp = await fetch(CSV_FILE);
+    if (!resp.ok) throw new Error('CSV not found');
+    const text = await resp.text();
+    allRows = parseCSV(text);
+    init();
+  } catch(e) {
+    document.getElementById('tableBody').innerHTML =
+      `<tr><td colspan="5" class="no-data">
+         <div>⚠️ Could not load prices.csv<br>
+         <small style="margin-top:6px;display:block;">Make sure prices.csv is in the same folder as this page.</small></div>
+       </td></tr>`;
+    document.getElementById('footerCount').textContent = 'Data unavailable';
+  }
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    // handle quoted commas
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let ch of line) {
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    cols.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => {
+      const key = h.toLowerCase().replace(/\s+/g,'').replace(/[^a-z]/g,'');
+      // Map known header names
+      const map = {sku:'sku',skucode:'sku',code:'sku',productname:'name',name:'name',
+                   category:'category',brand:'brand',costprice:'costPrice',cost:'costPrice',
+                   purchaseprice:'costPrice',price:'costPrice'};
+      obj[map[key] || key] = (cols[i] || '').replace(/^"|"$/g,'');
+    });
+    return obj;
+  });
+}
+
+// ── Init dropdowns & stats ────────────────────────────────────────
+function init() {
+  const cats   = [...new Set(allRows.map(r => r.category).filter(Boolean))].sort();
+  const brands = [...new Set(allRows.map(r => r.brand).filter(Boolean))].sort();
+
+  const catSel   = document.getElementById('catFilter');
+  const brandSel = document.getElementById('brandFilter');
+  cats.forEach(c   => catSel.add(new Option(c, c)));
+  brands.forEach(b => brandSel.add(new Option(b, b)));
+
+  document.getElementById('statTotal').textContent  = allRows.length;
+  document.getElementById('statCats').textContent   = cats.length;
+  document.getElementById('statBrands').textContent = brands.length;
+
+  const now = new Date();
+  document.getElementById('lastBadge').textContent   = 'Updated ' + now.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('lastUpdated').textContent = 'List loaded: ' + now.toLocaleString('en-IN');
+
+  render();
+}
+
+// ── Render table ──────────────────────────────────────────────────
+function render() {
+  const q     = document.getElementById('searchBox').value.toLowerCase();
+  const cat   = document.getElementById('catFilter').value;
+  const brand = document.getElementById('brandFilter').value;
+
+  let rows = allRows.filter(r => {
+    const match = !q || [r.sku,r.name,r.category,r.brand].some(v => (v||'').toLowerCase().includes(q));
+    return match && (!cat || r.category === cat) && (!brand || r.brand === brand);
+  });
+
+  // sort
+  rows.sort((a,b) => {
+    const va = a[sortCol] || '', vb = b[sortCol] || '';
+    if (sortCol === 'costPrice') {
+      return (parseFloat(va)||0) > (parseFloat(vb)||0) ? sortDir : -sortDir;
+    }
+    return va.localeCompare(vb) * sortDir;
+  });
+
+  const tbody = document.getElementById('tableBody');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="5" class="no-data">No products match your filter.</td></tr>`;
+  } else {
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="sku">${esc(r.sku||'—')}</span></td>
+        <td><strong>${esc(r.name||'—')}</strong></td>
+        <td><span class="cat-badge">${esc(r.category||'—')}</span></td>
+        <td>${esc(r.brand||'—')}</td>
+        <td class="price">₹ ${fmt(r.costPrice)}</td>
+      </tr>`).join('');
+  }
+
+  document.getElementById('statShowing').textContent = rows.length;
+  document.getElementById('footerCount').textContent  = `Showing ${rows.length} of ${allRows.length} products`;
+
+  // update sort indicators
+  document.querySelectorAll('th[data-col]').forEach(th => {
+    th.classList.remove('asc','desc');
+    if (th.dataset.col === sortCol) th.classList.add(sortDir===1?'asc':'desc');
+  });
+}
+
+function sortBy(col) {
+  if (sortCol === col) sortDir = -sortDir;
+  else { sortCol = col; sortDir = 1; }
+  render();
+}
+
+// ── Excel export ──────────────────────────────────────────────────
+function exportExcel() {
+  const q     = document.getElementById('searchBox').value.toLowerCase();
+  const cat   = document.getElementById('catFilter').value;
+  const brand = document.getElementById('brandFilter').value;
+
+  let rows = allRows.filter(r => {
+    const match = !q || [r.sku,r.name,r.category,r.brand].some(v => (v||'').toLowerCase().includes(q));
+    return match && (!cat || r.category === cat) && (!brand || r.brand === brand);
+  });
+
+  const data = [['SKU / Code','Product Name','Category','Brand','Cost Price (₹)']];
+  rows.forEach(r => data.push([r.sku, r.name, r.category, r.brand, parseFloat(r.costPrice)||0]));
+
+  const ws = XLSX.utils.aoa_to_sheet(data);
+
+  // Style header row width
+  ws['!cols'] = [12,35,18,18,14].map(w => ({wch:w}));
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Master Price List');
+
+  const date = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `Supertek_PriceList_${date}.xlsx`);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmt(v) {
+  const n = parseFloat(v);
+  if (isNaN(n)) return '—';
+  return n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// ── Boot ──────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
