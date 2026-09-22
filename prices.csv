@@ -2233,18 +2233,25 @@ length 190±10mm",Non Volumetric Glassware,12,64.52
 14.316.0035,"Multiple Adapter, With Two Necks, One Vertical & One At 45°, SS 29/32, CS 29/32",Non Volumetric Glassware,1,130.46
 14.320.0005,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 19/26, Inclined
 SS 19/26, CS 19/26",Non Volumetric Glassware,1,123.40
+SS 19/26,"CS 19/26,Non Volumetric Glassware,1,123.40",,,0.00
 14.320.0010,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 19/26, Inclined
 SS 19/26, CS 24/29",Non Volumetric Glassware,1,126.77
+SS 19/26,"CS 24/29,Non Volumetric Glassware,1,126.77",,,0.00
 14.320.0015,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 14/23, Inclined
 SS 14/23, CS 29/32",Non Volumetric Glassware,1,171.45
+SS 14/23,"CS 29/32,Non Volumetric Glassware,1,171.45",,,0.00
 14.320.0020,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 19/26, Inclined
 SS 19/26, CS 29/32",Non Volumetric Glassware,1,134.35
+SS 19/26,"CS 29/32,Non Volumetric Glassware,1,134.35",,,0.00
 14.320.0025,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 29/32, Inclined
 SS 29/32, CS 29/32",Non Volumetric Glassware,1,171.45
+SS 29/32,"CS 29/32,Non Volumetric Glassware,1,171.45",,,0.00
 14.320.0030,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 24/29, Inclined
 SS 24/29, CS 24/29",Non Volumetric Glassware,1,140.54
+SS 24/29,"CS 24/29,Non Volumetric Glassware,1,140.54",,,0.00
 14.320.0032,"Multiple Adapter, With Three Necks, Two Parallel & One At 45°, Vertical SS 19/26, Inclined
 SS 19/26, CS 34/35",Non Volumetric Glassware,1,143.67
+SS 19/26,"CS 34/35,Non Volumetric Glassware,1,143.67",,,0.00
 14.324.0005,"Swan Neck Adapter With Screw Thread, For Use With Thermometer Or Air Leak Tube, SS 14/23, CS 19/26",Non Volumetric Glassware,1,91.79
 14.324.0010,"Swan Neck Adapter With Screw Thread, For Use With Thermometer Or Air Leak Tube, SS 19/26, CS 19/26",Non Volumetric Glassware,1,93.43
 14.324.0015,"Swan Neck Adapter With Screw Thread, For Use With Thermometer Or Air Leak Tube, SS 19/26, CS 24/29",Non Volumetric Glassware,1,96.79
@@ -2339,36 +2346,52 @@ Length 200mm",Non Volumetric Glassware,1,62.20
 14.382.0500,"Splash Head Adapters, for Rotavaps Anticlamp without return hole., Bulb Cap.500ml, CS 29/32, CS 24/29",Non Volumetric Glassware,1,317.67
 14.384.0005,"Splash Head Adapter, Pear Shape, Straight, Socket to
 fit flask14/23, Cone to fit condenser 14/23",Non Volumetric Glassware,1,127.13
+fit flask14/23,"Cone to fit condenser 14/23,Non Volumetric Glassware,1,127.13",,,0.00
 14.384.0010,"Splash Head Adapter, Pear Shape, Straight, Socket to
 fit flask19/26, Cone to fit condenser 24/29",Non Volumetric Glassware,1,129.13
+fit flask19/26,"Cone to fit condenser 24/29,Non Volumetric Glassware,1,129.13",,,0.00
 14.384.0015,"Splash Head Adapter, Pear Shape, Straight, Socket to
 fit flask29/32, Cone to fit condenser 29/32",Non Volumetric Glassware,1,138.14
+fit flask29/32,"Cone to fit condenser 29/32,Non Volumetric Glassware,1,138.14",,,0.00
 14.388.0005,"Splash Head, Pear Shape, Vertical, Cone to
 fit flask14/23, Cone to fit condenser 14/23",Non Volumetric Glassware,1,146.59
+fit flask14/23,"Cone to fit condenser 14/23,Non Volumetric Glassware,1,146.59",,,0.00
 14.388.0010,"Splash Head, Pear Shape, Vertical, Cone to
 fit flask19/26, Cone to fit condenser 19/26",Non Volumetric Glassware,1,148.70
+fit flask19/26,"Cone to fit condenser 19/26,Non Volumetric Glassware,1,148.70",,,0.00
 14.388.0015,"Splash Head, Pear Shape, Vertical, Cone to
 fit flask24/29, Cone to fit condenser 19/26",Non Volumetric Glassware,1,149.75
+fit flask24/29,"Cone to fit condenser 19/26,Non Volumetric Glassware,1,149.75",,,0.00
 14.388.0020,"Splash Head, Pear Shape, Vertical, Cone to
 fit flask24/29, Cone to fit condenser 24/29",Non Volumetric Glassware,1,150.80
+fit flask24/29,"Cone to fit condenser 24/29,Non Volumetric Glassware,1,150.80",,,0.00
 14.388.0025,"Splash Head, Pear Shape, Vertical, Cone to
 fit flask29/32, Cone to fit condenser 29/32",Non Volumetric Glassware,1,158.81
+fit flask29/32,"Cone to fit condenser 29/32,Non Volumetric Glassware,1,158.81",,,0.00
 14.392.0005,"Splash Head, Pear Shape, Sloping, Cone to
 fit flask14/23, Cone to fit condenser 14/23",Non Volumetric Glassware,1,133.08
+fit flask14/23,"Cone to fit condenser 14/23,Non Volumetric Glassware,1,133.08",,,0.00
 14.392.0010,"Splash Head, Pear Shape, Sloping, Cone to
 fit flask19/26, Cone to fit condenser 19/26",Non Volumetric Glassware,1,135.20
+fit flask19/26,"Cone to fit condenser 19/26,Non Volumetric Glassware,1,135.20",,,0.00
 14.392.0015,"Splash Head, Pear Shape, Sloping, Cone to
 fit flask24/29, Cone to fit condenser 19/26",Non Volumetric Glassware,1,136.25
+fit flask24/29,"Cone to fit condenser 19/26,Non Volumetric Glassware,1,136.25",,,0.00
 14.392.0020,"Splash Head, Pear Shape, Sloping, Cone to
 fit flask24/29, Cone to fit condenser 24/29",Non Volumetric Glassware,1,137.30
+fit flask24/29,"Cone to fit condenser 24/29,Non Volumetric Glassware,1,137.30",,,0.00
 14.392.0025,"Splash Head, Pear Shape, Sloping, Cone to
 fit flask29/32, Cone to fit condenser 29/32",Non Volumetric Glassware,1,145.32
+fit flask29/32,"Cone to fit condenser 29/32,Non Volumetric Glassware,1,145.32",,,0.00
 14.396.0005,"Steam Distillation Head, Sloping, Cone to
 fit flask24/29, Cone to fit condenser 19/26",Non Volumetric Glassware,1,156.27
+fit flask24/29,"Cone to fit condenser 19/26,Non Volumetric Glassware,1,156.27",,,0.00
 14.396.0010,"Steam Distillation Head, Sloping, Cone to
 fit flask34/35, Cone to fit condenser 19/26",Non Volumetric Glassware,1,164.16
+fit flask34/35,"Cone to fit condenser 19/26,Non Volumetric Glassware,1,164.16",,,0.00
 14.396.0015,"Steam Distillation Head, Sloping, Cone to
 fit flask34/35, Cone to fit condenser 24/29",Non Volumetric Glassware,1,165.23
+fit flask34/35,"Cone to fit condenser 24/29,Non Volumetric Glassware,1,165.23",,,0.00
 14.399.0005,"Adapter, Cone To Flexible Tubing Right Angle Connection With Screw Thread (Straight), SS 14/23",Non Volumetric Glassware,1,63.57
 14.399.0010,"Adapter, Cone To Flexible Tubing Right Angle Connection With Screw Thread (Straight), SS 19/26",Non Volumetric Glassware,1,66.69
 14.399.0015,"Adapter, Cone To Flexible Tubing Right Angle Connection With Screw Thread (Straight), SS 24/29",Non Volumetric Glassware,1,70.22
@@ -2468,12 +2491,16 @@ fit flask34/35, Cone to fit condenser 24/29",Non Volumetric Glassware,1,165.23
 14.444.0020,"Air Leak Tube/Gas Inlet Tube, CS 29/32",Non Volumetric Glassware,10,41.33
 14.448.0005,"Adapter Cone Screw Thread, To fit
 stirrer 6 mm, CS 14/23",Non Volumetric Glassware,10,49.03
+stirrer 6 mm,"CS 14/23,Non Volumetric Glassware,10,49.03",,,0.00
 14.448.0010,"Adapter Cone Screw Thread, To fit
 stirrer 6 mm, CS 19/26",Non Volumetric Glassware,10,51.90
+stirrer 6 mm,"CS 19/26,Non Volumetric Glassware,10,51.90",,,0.00
 14.448.0015,"Adapter Cone Screw Thread, To fit
 stirrer 6 mm, CS 24/29",Non Volumetric Glassware,10,55.23
+stirrer 6 mm,"CS 24/29,Non Volumetric Glassware,10,55.23",,,0.00
 14.448.0020,"Adapter Cone Screw Thread, To fit
 stirrer 6 mm, CS 29/32",Non Volumetric Glassware,10,62.60
+stirrer 6 mm,"CS 29/32,Non Volumetric Glassware,10,62.60",,,0.00
 15.320.0815,"Glass Stirring Rods, Approx OD x Length8 x 150",Non Volumetric Glassware,20,8.28
 15.320.0820,"Glass Stirring Rods, Approx OD x Length8 x 200",Non Volumetric Glassware,20,9.32
 15.320.0825,"Glass Stirring Rods, Approx OD x Length8 x 250",Non Volumetric Glassware,20,10.35
@@ -2485,39 +2512,58 @@ stirrer 6 mm, CS 29/32",Non Volumetric Glassware,10,62.60
 14.463.0005,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 6, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  19/26, Blade width 52mm",Non Volumetric Glassware,2,224.22
+dia. 6,Shaft Length 450mm,Smallest  Socket through,,0.00
+which blade will pass  19/26,"Blade width 52mm,Non Volumetric Glassware,2,224.22",,,0.00
 14.463.0010,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 6, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  24/29, Blade width 76mm",Non Volumetric Glassware,2,236.24
+dia. 6,Shaft Length 450mm,Smallest  Socket through,,0.00
+which blade will pass  24/29,"Blade width 76mm,Non Volumetric Glassware,2,236.24",,,0.00
 14.463.0015,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 8, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  24/29, Blade width 76mm",Non Volumetric Glassware,2,242.24
+dia. 8,Shaft Length 450mm,Smallest  Socket through,,0.00
+which blade will pass  24/29,"Blade width 76mm,Non Volumetric Glassware,2,242.24",,,0.00
 14.463.0020,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 8, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  29/32, Blade width 100mm",Non Volumetric Glassware,2,263.26
+dia. 8,Shaft Length 450mm,Smallest  Socket through,,0.00
+which blade will pass  29/32,"Blade width 100mm,Non Volumetric Glassware,2,263.26",,,0.00
 14.463.0025,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 8, Shaft Length 600mm, Smallest  Socket through
 which blade will pass  34/35, Blade width 100mm",Non Volumetric Glassware,2,319.32
+dia. 8,Shaft Length 600mm,Smallest  Socket through,,0.00
+which blade will pass  34/35,"Blade width 100mm,Non Volumetric Glassware,2,319.32",,,0.00
 14.463.0030,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 10, Shaft Length 450mm, Smallest  Socket through
 which blade will pass   34/35, Blade width 100mm",Non Volumetric Glassware,2,311.31
+dia. 10,Shaft Length 450mm,Smallest  Socket through,,0.00
+which blade will pass   34/35,"Blade width 100mm,Non Volumetric Glassware,2,311.31",,,0.00
 14.463.0035,"Teflon Bladed Stirrers, Blade Removable from the Stirrer Shaft, Approx shaft
 dia. 10, Shaft Length 600mm, Smallest  Socket through
 which blade will pass  34/35, Blade width 125mm",Non Volumetric Glassware,2,341.34
+dia. 10,Shaft Length 600mm,Smallest  Socket through,,0.00
+which blade will pass  34/35,"Blade width 125mm,Non Volumetric Glassware,2,341.34",,,0.00
 14.463.0040,"Shaft for Teflon Bladed Stirrers, Approx shaft
 dia. 6, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  19/26mm",Non Volumetric Glassware,2,48.59
+dia. 6,Shaft Length 450mm,Smallest  Socket through,,0.00
 14.463.0045,"Shaft for Teflon Bladed Stirrers, Approx shaft
 dia. 8, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  24/29mm",Non Volumetric Glassware,2,55.01
+dia. 8,Shaft Length 450mm,Smallest  Socket through,,0.00
 14.463.0050,"Shaft for Teflon Bladed Stirrers, Approx shaft
 dia. 8, Shaft Length 600mm, Smallest  Socket through
 which blade will pass  34/35mm",Non Volumetric Glassware,2,83.25
+dia. 8,Shaft Length 600mm,Smallest  Socket through,,0.00
 14.463.0055,"Shaft for Teflon Bladed Stirrers, Approx shaft
 dia. 10, Shaft Length 450mm, Smallest  Socket through
 which blade will pass  34/35mm",Non Volumetric Glassware,2,72.30
+dia. 10,Shaft Length 450mm,Smallest  Socket through,,0.00
 14.463.0060,"Shaft for Teflon Bladed Stirrers, Approx shaft
 dia. 10, Shaft Length 600mm, Smallest  Socket through
 which blade will pass  34/35mm",Non Volumetric Glassware,2,106.42
+dia. 10,Shaft Length 600mm,Smallest  Socket through,,0.00
 CHQT10/1R,"Quartz,Combustion Boat With Handle, 15 x 48mm (O.D. x Length)",Non Volumetric Glassware,5,165.00
 CHQT10/2R,"Quartz,Combustion Boat With Handle, 16 x 77mm (O.D. x Length)",Non Volumetric Glassware,5,180.00
 CHQT10/3R,"Quartz,Combustion Boat With Handle, 20 x 77mm (O.D. x Length)",Non Volumetric Glassware,5,200.00
