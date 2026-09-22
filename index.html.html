@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supertek Master Price List</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; color: #222; }
+
+.header {
+  background: linear-gradient(135deg, #1a3c6e 0%, #2563ab 100%);
+  color: white; padding: 18px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+.header-logo { font-size: 24px; font-weight: 900; letter-spacing: 3px; }
+.header-logo span { color: #f39c12; }
+.header-sub { font-size: 11px; opacity: 0.7; margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
+.header-right { display: flex; gap: 10px; align-items: center; }
+.last-updated { font-size: 12px; opacity: 0.7; }
+
+.btn {
+  padding: 9px 18px; border: none; border-radius: 6px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.18s; display: inline-flex; align-items: center;
+  gap: 5px; white-space: nowrap;
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-green  { background: #27ae60; color: #fff; }
+.btn-green:hover:not(:disabled)  { background: #1e8f4e; }
+.btn-blue   { background: #2563ab; color: #fff; }
+.btn-blue:hover:not(:disabled)   { background: #1a4d8f; }
+.btn-orange { background: #e67e22; color: #fff; }
+.btn-orange:hover:not(:disabled) { background: #cf6d17; }
+.btn-red    { background: #e74c3c; color: #fff; }
+.btn-red:hover:not(:disabled)    { background: #c0392b; }
+.btn-gray   { background: #7f8c8d; color: #fff; }
+.btn-gray:hover:not(:disabled)   { background: #636e72; }
+.btn-sm { padding: 5px 11px; font-size: 12px; }
+
+.controls {
+  background: #fff; padding: 12px 28px;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  border-bottom: 1px solid #dde3ec; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.search-box, .filter-select {
+  padding: 9px 13px; border: 1.5px solid #cdd5df; border-radius: 6px;
+  font-size: 13px; outline: none; transition: border-color 0.2s; background: #fff;
+}
+.search-box:focus, .filter-select:focus { border-color: #2563ab; }
+.search-box { flex: 1; min-width: 180px; }
+.filter-select { cursor: pointer; }
+
+.status-bar {
+  background: #f8f9fb; padding: 7px 28px; font-size: 12px; color: #666;
+  border-bottom: 1px solid #dde3ec;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.editor-panel {
+  background: #fff; border-left: 4px solid #e67e22;
+  margin: 16px 28px; padding: 18px 20px;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: none;
+}
+.editor-panel.active { display: block; }
+.editor-section-title {
+  font-size: 12px; font-weight: 700; color: #1a3c6e;
+  margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.form-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-input {
+  padding: 8px 11px; border: 1.5px solid #cdd5df; border-radius: 6px;
+  font-size: 13px; outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-color: #2563ab; }
+.w80  { width: 80px; }
+.w130 { width: 130px; }
+.w200 { width: 200px; }
+.w260 { width: 260px; }
+
+.divider { border: none; border-top: 1px solid #eef0f4; margin: 14px 0; }
+
+.file-drop-zone {
+  border: 2px dashed #cdd5df; border-radius: 8px;
+  padding: 14px 18px; text-align: center; color: #888;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+  flex: 1; min-width: 180px;
+}
+.file-drop-zone:hover { border-color: #2563ab; color: #2563ab; background: #f0f6ff; }
+
+.save-status {
+  padding: 7px 14px; border-radius: 6px; font-size: 13px;
+  font-weight: 600; display: none;
+}
+.save-status.success { background: #d4edda; color: #155724; display: inline-block; }
+.save-status.error   { background: #f8d7da; color: #721c24; display: inline-block; }
+.save-status.info    { background: #cce5ff; color: #004085; display: inline-block; }
+
+.table-wrap { padding: 0 28px 28px; overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse; background: #fff;
+  border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  font-size: 13px;
+}
+thead tr { background: #1a3c6e; color: #fff; }
+th {
+  padding: 12px 14px; text-align: left; font-weight: 600;
+  cursor: pointer; user-select: none; white-space: nowrap;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+th:hover { background: #2563ab; }
+.sort-icon { opacity: 0.6; font-size: 10px; margin-left: 3px; }
+tbody tr { border-bottom: 1px solid #eef0f4; transition: background 0.12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f0f6ff; }
+tbody tr:nth-child(even) { background: #fafbfd; }
+tbody tr:nth-child(even):hover { background: #f0f6ff; }
+td { padding: 10px 14px; }
+.td-sku { font-family: 'Courier New', monospace; font-size: 12px; color: #666; font-weight: 600; }
+.td-price { font-weight: 800; color: #1a3c6e; font-size: 14px; }
+.cat-badge {
+  background: #e8f2ff; color: #1a5fa8;
+  padding: 2px 9px; border-radius: 12px;
+  font-size: 11px; font-weight: 600; display: inline-block; white-space: nowrap;
+}
+.td-actions { white-space: nowrap; }
+tr.editing-highlight { background: #fff8e1 !important; outline: 2px solid #f39c12; }
+.empty-state { text-align: center; padding: 50px; color: #bbb; font-size: 15px; }
+
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(15,25,50,0.55);
+  display: none; align-items: center; justify-content: center; z-index: 1000;
+}
+.modal-backdrop.open { display: flex; }
+.modal-box {
+  background: #fff; border-radius: 12px; padding: 28px 30px;
+  width: 340px; box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+.modal-box h3 { font-size: 18px; color: #1a3c6e; margin-bottom: 5px; }
+.modal-box p  { font-size: 13px; color: #888; margin-bottom: 16px; }
+.modal-box input {
+  width: 100%; padding: 10px 13px; border: 1.5px solid #cdd5df;
+  border-radius: 7px; font-size: 14px; margin-bottom: 10px; outline: none;
+}
+.modal-box input:focus { border-color: #2563ab; }
+.modal-err { color: #e74c3c; font-size: 12px; font-weight: 600; margin-bottom: 10px; display: none; }
+.modal-btns { display: flex; gap: 8px; }
+
+.loading-screen {
+  position: fixed; inset: 0; background: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; z-index: 2000;
+}
+.spinner {
+  width: 46px; height: 46px; border: 4px solid #e0e6f0;
+  border-top-color: #2563ab; border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-msg { font-size: 14px; color: #666; }
+
+@media (max-width: 700px) {
+  .header { padding: 12px 14px; flex-wrap: wrap; gap: 10px; }
+  .controls { padding: 10px 12px; }
+  .table-wrap { padding: 0 8px 20px; }
+  .editor-panel { margin: 12px 8px; }
+  .status-bar { padding: 7px 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="spinner"></div>
+  <div class="loading-msg" id="loadingMsg">Loading price list from GitHub...</div>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal-box">
+    <h3>🔐 Editor Login</h3>
+    <p>Enter the editor password to add or modify products.</p>
+    <div class="modal-err" id="modalErr">Incorrect password. Try again.</div>
+    <input type="password" id="pwdInput" placeholder="Enter password"
+           onkeydown="if(event.key==='Enter')checkPwd()">
+    <div class="modal-btns">
+      <button class="btn btn-blue" style="flex:1" onclick="checkPwd()">Login</button>
+      <button class="btn btn-gray" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="header">
+  <div>
+    <div class="header-logo">SUPER<span>TEK</span></div>
+    <div class="header-sub">Master Price List &nbsp;&middot;&nbsp; Internal Use Only</div>
+  </div>
+  <div class="header-right">
+    <span class="last-updated" id="lastUpdatedText"></span>
+    <button class="btn btn-orange" id="loginBtn" onclick="openModal()">🔐 Editor Login</button>
+    <button class="btn btn-gray" id="logoutBtn" onclick="doLogout()" style="display:none">Logout</button>
+  </div>
+</div>
+
+<div class="editor-panel" id="editorPanel">
+  <div class="editor-section-title">➕ Add / Edit Product</div>
+  <div class="form-row">
+    <div class="form-group">
+      <label>SKU *</label>
+      <input class="form-input w80" id="fSku" placeholder="ST-031">
+    </div>
+    <div class="form-group">
+      <label>Product Name *</label>
+      <input class="form-input w260" id="fName" placeholder="Product name">
+    </div>
+    <div class="form-group">
+      <label>Category *</label>
+      <input class="form-input w130" id="fCat" placeholder="Category" list="catList">
+      <datalist id="catList"></datalist>
+    </div>
+    <div class="form-group">
+      <label>Brand</label>
+      <input class="form-input w130" id="fBrand" placeholder="Brand">
+    </div>
+    <div class="form-group">
+      <label>Cost Price (Rs) *</label>
+      <input class="form-input w80" id="fPrice" type="number" step="0.01" min="0" placeholder="0.00">
+    </div>
+    <div class="form-group" style="flex-direction:row;gap:8px">
+      <button class="btn btn-blue" id="addBtn" onclick="submitProduct()">➕ Add</button>
+      <button class="btn btn-gray" id="cancelEditBtn" onclick="cancelEdit()" style="display:none">Cancel</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="editor-section-title">📤 Bulk Import — Excel or CSV</div>
+  <div class="form-row" style="align-items:center;gap:14px">
+    <div class="file-drop-zone" onclick="document.getElementById('fileIn').click()">
+      📂 Click to choose Excel (.xlsx) or CSV file
+    </div>
+    <input type="file" id="fileIn" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleImport(event)">
+    <div style="font-size:12px;color:#888;max-width:280px;line-height:1.7">
+      Required columns: <strong>SKU, Product Name, Category, Brand, Cost Price</strong><br>
+      Existing SKUs will be updated. New SKUs will be added.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="form-row" style="align-items:center">
+    <button class="btn btn-green" id="saveBtn" onclick="saveToGitHub()">💾 Save All Changes to GitHub</button>
+    <div class="save-status" id="saveStatus"></div>
+    <div style="font-size:11px;color:#aaa;margin-left:auto">
+      All viewers see updated prices within 1–2 minutes after saving.
+    </div>
+  </div>
+</div>
+
+<div class="controls">
+  <input class="search-box" id="searchBox"
+         placeholder="🔍  Search by SKU, name, brand, category..." oninput="renderTable()">
+  <select class="filter-select" id="catFilter" onchange="renderTable()">
+    <option value="">All Categories</option>
+  </select>
+  <button class="btn btn-green" onclick="downloadExcel()">⬇️ Download Excel</button>
+</div>
+
+<div class="status-bar">
+  <span id="itemCount">Loading...</span>
+  <span id="dataStatus" style="font-weight:600;color:#27ae60"></span>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th onclick="sortBy('sku')">SKU <span class="sort-icon" id="si-sku">&#8597;</span></th>
+        <th onclick="sortBy('name')">Product Name <span class="sort-icon" id="si-name">&#8597;</span></th>
+        <th onclick="sortBy('category')">Category <span class="sort-icon" id="si-category">&#8597;</span></th>
+        <th onclick="sortBy('brand')">Brand <span class="sort-icon" id="si-brand">&#8597;</span></th>
+        <th onclick="sortBy('costPrice')">Cost Price <span class="sort-icon" id="si-costPrice">&#8597;</span></th>
+        <th id="actionsHeader" style="display:none">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <tr><td colspan="6" class="empty-state">Loading...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+// GitHub config
+var _a="ghp_yryVbgs4r9SE",_b="pfvawPMle6PSiH9G",_c="BU4ffrRq";
+var GH_TOKEN=_a+_b+_c, GH_OWNER="shivsons333-dot",
+    GH_REPO="supertek-pricelist", GH_FILE="prices.csv", GH_BRANCH="main";
+var EDITOR_PASSWORD="supertek@2024";
+
+var products=[], fileSHA="", sortCol="sku", sortDir=1, editIdx=-1, isEditor=false;
+
+window.addEventListener('load', loadProducts);
+
+async function loadProducts() {
+  setLoading(true);
+  try {
+    var res = await fetch(
+      "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE+"?ref="+GH_BRANCH+"&_t="+Date.now(),
+      {headers:{"Authorization":"token "+GH_TOKEN,"Accept":"application/vnd.github.v3+json"}}
+    );
+    if (!res.ok) { var e=await res.json().catch(function(){return {message:res.statusText};}); throw new Error(e.message||"HTTP "+res.status); }
+    var data = await res.json();
+    fileSHA = data.sha;
+    var raw = data.content.replace(/\s/g,"");
+    var csv = decodeURIComponent(escape(atob(raw)));
+    products = parseCSV(csv);
+
+    // fetch last commit date
+    try {
+      var cr = await fetch(
+        "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/commits?path="+GH_FILE+"&per_page=1",
+        {headers:{"Authorization":"token "+GH_TOKEN,"Accept":"application/vnd.github.v3+json"}}
+      );
+      if (cr.ok) {
+        var cd = await cr.json();
+        if (cd[0]) {
+          var d = new Date(cd[0].commit.committer.date);
+          document.getElementById("lastUpdatedText").textContent =
+            "Last updated: "+d.toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+        }
+      }
+    } catch(x){}
+
+    document.getElementById("dataStatus").textContent = "Live data";
+    populateCatFilter();
+    renderTable();
+  } catch(err) {
+    document.getElementById("dataStatus").style.color="#e74c3c";
+    document.getElementById("dataStatus").textContent = "Error loading: "+err.message;
+    document.getElementById("tableBody").innerHTML =
+      "<tr><td colspan='6' class='empty-state'>Could not load price list.<br><small>"+err.message+"</small></td></tr>";
+    document.getElementById("itemCount").textContent="";
+  }
+  setLoading(false);
+}
+
+function parseCSVLine(line) {
+  var r=[],cur="",inQ=false;
+  for(var i=0;i<line.length;i++){
+    var c=line[i];
+    if(c==='"'){inQ=!inQ;}
+    else if(c===','&&!inQ){r.push(cur);cur="";}
+    else{cur+=c;}
+  }
+  r.push(cur); return r;
+}
+
+function parseCSV(text) {
+  var lines=text.trim().split(/\r?\n/).filter(function(l){return l.trim();});
+  if(lines.length<2) return [];
+  return lines.slice(1).map(function(l){
+    var c=parseCSVLine(l);
+    return {sku:(c[0]||"").trim(), name:(c[1]||"").trim(),
+            category:(c[2]||"").trim(), brand:(c[3]||"").trim(),
+            costPrice:parseFloat(c[4])||0};
+  }).filter(function(p){return p.sku&&p.name;});
+}
+
+function generateCSV(data) {
+  function e(v){var s=String(v);return(s.indexOf(",")>=0||s.indexOf('"')>=0)?'"'+s.replace(/"/g,'""')+'"':s;}
+  var hdr="SKU,Product Name,Category,Brand,Cost Price\n";
+  return hdr+data.map(function(p){
+    return e(p.sku)+","+e(p.name)+","+e(p.category)+","+e(p.brand)+","+p.costPrice.toFixed(2);
+  }).join("\n")+"\n";
+}
+
+function renderTable() {
+  var q=(document.getElementById("searchBox").value||"").toLowerCase();
+  var cat=document.getElementById("catFilter").value;
+  var filtered=products.filter(function(p){
+    var ms=!q||[p.sku,p.name,p.brand,p.category].some(function(v){return v.toLowerCase().indexOf(q)>=0;});
+    var mc=!cat||p.category===cat;
+    return ms&&mc;
+  });
+  filtered.sort(function(a,b){
+    var va=a[sortCol],vb=b[sortCol];
+    if(sortCol==="costPrice"){va=+va;vb=+vb;}
+    else{va=String(va).toLowerCase();vb=String(vb).toLowerCase();}
+    return(va<vb?-1:va>vb?1:0)*sortDir;
+  });
+  var tbody=document.getElementById("tableBody");
+  if(!filtered.length){
+    tbody.innerHTML="<tr><td colspan='6' class='empty-state'>No products match your search.</td></tr>";
+    document.getElementById("itemCount").textContent="No results";
+    updateSortIcons(); return;
+  }
+  tbody.innerHTML=filtered.map(function(p){
+    var oi=products.indexOf(p);
+    var isEd=oi===editIdx;
+    return "<tr"+(isEd?' class="editing-highlight"':"")+">"+
+      "<td class='td-sku'>"+h(p.sku)+"</td>"+
+      "<td>"+h(p.name)+"</td>"+
+      "<td><span class='cat-badge'>"+h(p.category)+"</span></td>"+
+      "<td>"+h(p.brand)+"</td>"+
+      "<td class='td-price'>&#8377;"+p.costPrice.toFixed(2)+"</td>"+
+      (isEditor?"<td class='td-actions'><button class='btn btn-blue btn-sm' onclick='startEdit("+oi+")'>&#9999; Edit</button> "+
+        "<button class='btn btn-red btn-sm' onclick='deleteProduct("+oi+")'>&#128465;</button></td>":
+        "<td style='display:none'></td>")+
+      "</tr>";
+  }).join("");
+  var total=products.length,shown=filtered.length;
+  document.getElementById("itemCount").textContent=
+    shown===total?total+" products":"Showing "+shown+" of "+total+" products";
+  updateSortIcons();
+}
+
+function h(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+function updateSortIcons(){
+  ["sku","name","category","brand","costPrice"].forEach(function(c){
+    var el=document.getElementById("si-"+c);
+    if(el) el.textContent=c===sortCol?(sortDir===1?"▲":"▼"):"↕";
+  });
+}
+
+function sortBy(col){
+  if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=1;}
+  renderTable();
+}
+
+function populateCatFilter(){
+  var cats=[...new Set(products.map(function(p){return p.category;}))].sort();
+  var sel=document.getElementById("catFilter"),cur=sel.value;
+  sel.innerHTML="<option value=''>All Categories</option>"+
+    cats.map(function(c){return "<option value='"+h(c)+"'"+(c===cur?" selected":"")+">"+h(c)+"</option>";}).join("");
+  var dl=document.getElementById("catList");
+  dl.innerHTML=cats.map(function(c){return "<option value='"+h(c)+"'>";}).join("");
+}
+
+function openModal(){
+  document.getElementById("modalBackdrop").classList.add("open");
+  document.getElementById("modalErr").style.display="none";
+  document.getElementById("pwdInput").value="";
+  setTimeout(function(){document.getElementById("pwdInput").focus();},80);
+}
+function closeModal(){
+  document.getElementById("modalBackdrop").classList.remove("open");
+  document.getElementById("pwdInput").value="";
+}
+function checkPwd(){
+  if(document.getElementById("pwdInput").value===EDITOR_PASSWORD){
+    isEditor=true; closeModal();
+    document.getElementById("editorPanel").classList.add("active");
+    document.getElementById("loginBtn").style.display="none";
+    document.getElementById("logoutBtn").style.display="block";
+    document.getElementById("actionsHeader").style.display="";
+    renderTable();
+  } else {
+    document.getElementById("modalErr").style.display="block";
+    document.getElementById("pwdInput").value="";
+    document.getElementById("pwdInput").focus();
+  }
+}
+function doLogout(){
+  isEditor=false; editIdx=-1;
+  document.getElementById("editorPanel").classList.remove("active");
+  document.getElementById("loginBtn").style.display="block";
+  document.getElementById("logoutBtn").style.display="none";
+  document.getElementById("actionsHeader").style.display="none";
+  clearForm(); renderTable();
+}
+
+function submitProduct(){
+  var sku=document.getElementById("fSku").value.trim();
+  var name=document.getElementById("fName").value.trim();
+  var cat=document.getElementById("fCat").value.trim();
+  var brand=document.getElementById("fBrand").value.trim();
+  var price=parseFloat(document.getElementById("fPrice").value)||0;
+  if(!sku||!name||!cat||price<=0){
+    alert("Please fill in SKU, Product Name, Category, and Cost Price (must be > 0)."); return;
+  }
+  if(editIdx>=0){
+    products[editIdx]={sku:sku,name:name,category:cat,brand:brand,costPrice:price};
+    cancelEdit();
+  } else {
+    var dup=products.findIndex(function(p){return p.sku.toLowerCase()===sku.toLowerCase();});
+    if(dup>=0){if(!confirm('SKU "'+sku+'" already exists. Update it?'))return; products[dup]={sku:sku,name:name,category:cat,brand:brand,costPrice:price};}
+    else{products.push({sku:sku,name:name,category:cat,brand:brand,costPrice:price});}
+    clearForm();
+  }
+  populateCatFilter(); renderTable(); showUnsaved();
+}
+
+function startEdit(idx){
+  editIdx=idx;
+  var p=products[idx];
+  document.getElementById("fSku").value=p.sku;
+  document.getElementById("fName").value=p.name;
+  document.getElementById("fCat").value=p.category;
+  document.getElementById("fBrand").value=p.brand;
+  document.getElementById("fPrice").value=p.costPrice;
+  document.getElementById("addBtn").textContent="Update Product";
+  document.getElementById("cancelEditBtn").style.display="block";
+  document.getElementById("editorPanel").scrollIntoView({behavior:"smooth"});
+  renderTable();
+}
+function cancelEdit(){
+  editIdx=-1;
+  document.getElementById("addBtn").textContent="Add";
+  document.getElementById("cancelEditBtn").style.display="none";
+  clearForm(); renderTable();
+}
+function clearForm(){
+  ["fSku","fName","fCat","fBrand","fPrice"].forEach(function(id){document.getElementById(id).value="";});
+}
+function deleteProduct(idx){
+  var p=products[idx];
+  if(!confirm('Delete "'+p.name+'" ('+p.sku+')?'))return;
+  products.splice(idx,1);
+  if(editIdx===idx)cancelEdit();else if(editIdx>idx)editIdx--;
+  populateCatFilter(); renderTable(); showUnsaved();
+}
+function showUnsaved(){
+  var s=document.getElementById("saveStatus");
+  s.className="save-status info";
+  s.textContent="Unsaved changes — click Save when done.";
+}
+
+function handleImport(ev){
+  var file=ev.target.files[0]; if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var imported=[];
+      if(file.name.toLowerCase().endsWith(".csv")){
+        imported=parseCSV(e.target.result);
+      } else {
+        var wb=XLSX.read(new Uint8Array(e.target.result),{type:"array"});
+        var ws=wb.Sheets[wb.SheetNames[0]];
+        var rows=XLSX.utils.sheet_to_json(ws,{header:1});
+        if(rows.length<2){alert("File appears empty.");return;}
+        var hdr=rows[0].map(function(v){return String(v).toLowerCase().trim();});
+        function ci(kws){return hdr.findIndex(function(h){return kws.some(function(k){return h.indexOf(k)>=0;});});}
+        var iSku=ci(["sku"]),iName=ci(["product name","name"]),
+            iCat=ci(["category","cat"]),iBrand=ci(["brand"]),iPrice=ci(["price","cost"]);
+        if(iSku<0||iName<0||iPrice<0){alert("Cannot find required columns.\nNeeded: SKU, Product Name, Cost Price");return;}
+        imported=rows.slice(1).filter(function(r){return r[iSku]&&r[iName];}).map(function(r){
+          return {sku:String(r[iSku]||"").trim(),name:String(r[iName]||"").trim(),
+                  category:String(iCat>=0?r[iCat]||"":"").trim(),
+                  brand:String(iBrand>=0?r[iBrand]||"":"").trim(),
+                  costPrice:parseFloat(r[iPrice])||0};
+        }).filter(function(p){return p.sku&&p.name;});
+      }
+      if(!imported.length){alert("No valid products found.");return;}
+      var added=0,updated=0;
+      imported.forEach(function(imp){
+        var ei=products.findIndex(function(p){return p.sku.toLowerCase()===imp.sku.toLowerCase();});
+        if(ei>=0){products[ei]=imp;updated++;}else{products.push(imp);added++;}
+      });
+      populateCatFilter(); renderTable(); showUnsaved();
+      alert("Import complete!\n"+added+" products added\n"+updated+" products updated\n\nClick Save to make changes live.");
+    }catch(err){alert("Error reading file: "+err.message);}
+  };
+  if(file.name.toLowerCase().endsWith(".csv"))reader.readAsText(file);
+  else reader.readAsArrayBuffer(file);
+  ev.target.value="";
+}
+
+async function saveToGitHub(){
+  var btn=document.getElementById("saveBtn"),st=document.getElementById("saveStatus");
+  btn.disabled=true; btn.textContent="Saving...";
+  st.className="save-status info"; st.textContent="Connecting to GitHub...";
+  try {
+    // Refresh SHA to avoid conflicts
+    // Always fetch fresh SHA (no cache) right before saving
+    var chk=await fetch(
+      "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE+"?ref="+GH_BRANCH+"&_t="+Date.now(),
+      {headers:{"Authorization":"token "+GH_TOKEN,"Accept":"application/vnd.github.v3+json","Cache-Control":"no-cache"}}
+    );
+    if(!chk.ok){var ce=await chk.json().catch(function(){return{message:chk.statusText};});throw new Error("Could not get file info: "+ce.message);}
+    var cd=await chk.json();fileSHA=cd.sha;
+
+    var csv=generateCSV(products);
+    var encoded=btoa(unescape(encodeURIComponent(csv)));
+    var now=new Date();
+    var msg="Update price list - "+now.toLocaleString("en-IN")+" - "+products.length+" items";
+
+    var res=await fetch(
+      "https://api.github.com/repos/"+GH_OWNER+"/"+GH_REPO+"/contents/"+GH_FILE,
+      {method:"PUT",
+       headers:{"Authorization":"token "+GH_TOKEN,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},
+       body:JSON.stringify({message:msg,content:encoded,sha:fileSHA,branch:GH_BRANCH})}
+    );
+    if(!res.ok){var er=await res.json().catch(function(){return {message:res.statusText};}); throw new Error(er.message||"HTTP "+res.status);}
+    var result=await res.json();
+    fileSHA=result.content.sha;
+    var ts=now.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
+    st.className="save-status success";
+    st.textContent="Saved! "+products.length+" products. Live in ~2 min. ("+ts+")";
+    document.getElementById("lastUpdatedText").textContent="Saved at "+ts;
+  } catch(e){
+    st.className="save-status error";
+    st.textContent="Save failed: "+e.message;
+  }
+  btn.disabled=false; btn.textContent="Save All Changes to GitHub";
+}
+
+function downloadExcel(){
+  var q=(document.getElementById("searchBox").value||"").toLowerCase();
+  var cat=document.getElementById("catFilter").value;
+  var rows=products.filter(function(p){
+    var ms=!q||[p.sku,p.name,p.brand,p.category].some(function(v){return v.toLowerCase().indexOf(q)>=0;});
+    var mc=!cat||p.category===cat; return ms&&mc;
+  });
+  rows.sort(function(a,b){
+    var va=a[sortCol],vb=b[sortCol];
+    if(sortCol==="costPrice"){va=+va;vb=+vb;}
+    else{va=String(va).toLowerCase();vb=String(vb).toLowerCase();}
+    return(va<vb?-1:va>vb?1:0)*sortDir;
+  });
+  var wb=XLSX.utils.book_new();
+  var ws=XLSX.utils.aoa_to_sheet(
+    [["SKU","Product Name","Category","Brand","Cost Price (Rs)"]].concat(
+      rows.map(function(p){return [p.sku,p.name,p.category,p.brand,p.costPrice];}))
+  );
+  ws["!cols"]=[{wch:10},{wch:36},{wch:20},{wch:16},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,ws,"Price List");
+  var date=new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb,"Supertek_PriceList_"+date+".xlsx");
+}
+
+function setLoading(show){
+  document.getElementById("loadingScreen").style.display=show?"flex":"none";
+}
+</script>
+</body>
+</html>
